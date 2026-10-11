@@ -1,0 +1,1 @@
+print("Capital Craft AI is starting!")
