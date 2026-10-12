@@ -1,5 +1,6 @@
 
 import streamlit as st
+from lead_form import show_lead_form
 
 
 from dotenv import load_dotenv
@@ -89,3 +90,6 @@ if question:
     with st.chat_message("assistant"):
         st.write(answer)
 
+
+# Display the callback request form
+show_lead_form()
