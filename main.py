@@ -1,36 +1,44 @@
+
 from dotenv import load_dotenv
 from openai import OpenAI
 
-# Load the API key from the .env file
+# Load the API key from .env
 load_dotenv()
 
-# Create a connection to OpenAI
+# Connect to OpenAI
 client = OpenAI()
 
-# Send our first message to the AI
+# Instructions for our company assistant
+instructions = """
+You are the AI assistant for Capital Craft Advisors.
 
-response = client.responses.create(
-    model="gpt-6-luna",
-    instructions="""
-    You are the AI assistant for Capital Craft Advisors.
+The company provides these services:
+- Real Estate Funding
+- Home Loans
+- Business Loans
+- Mortgage Loans (LAP)
+- Lease Rental Discounting (LRD)
 
-    The company provides these services:
-    - Real Estate Funding
-    - Home Loans
-    - Business Loans
-    - Mortgage Loans (LAP)
-    - Lease Rental Discounting (LRD)
+Answer politely and clearly.
+Do not invent interest rates, eligibility rules, fees, or loan approvals.
+If you do not know an answer, recommend contacting a company representative.
+"""
 
-    Answer questions politely and clearly.
-    Only share information provided in your instructions.
-    Do not invent interest rates, eligibility rules, loan approvals,
-    fees, or financial terms.
-    If you do not know an answer, say that a company representative
-    can provide the details.
-    """,
-    input="What services does Capital Craft Advisors provide?"
-)
+# Keep asking questions until the user exits
+while True:
+    question = input("\nYou: ")
 
-print(response.output_text)
+    if question.lower() in ["exit", "quit"]:
+        print("Capital Craft AI: Goodbye!")
+        break
 
+    if not question.strip():
+        continue
 
+    response = client.responses.create(
+        model="gpt-6-luna",
+        instructions=instructions,
+        input=question
+    )
+
+    print("\nCapital Craft AI:", response.output_text)
