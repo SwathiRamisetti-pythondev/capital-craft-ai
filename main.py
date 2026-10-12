@@ -9,20 +9,11 @@ load_dotenv()
 client = OpenAI()
 
 # Instructions for our company assistant
-instructions = """
-You are the AI assistant for Capital Craft Advisors.
 
-The company provides these services:
-- Real Estate Funding
-- Home Loans
-- Business Loans
-- Mortgage Loans (LAP)
-- Lease Rental Discounting (LRD)
+# Read company information from the text file
+with open("company_info.txt", "r", encoding="utf-8") as file:
+    company_info = file.read()
 
-Answer politely and clearly.
-Do not invent interest rates, eligibility rules, fees, or loan approvals.
-If you do not know an answer, recommend contacting a company representative.
-"""
 
 # Keep asking questions until the user exits
 while True:
@@ -37,7 +28,7 @@ while True:
 
     response = client.responses.create(
         model="gpt-6-luna",
-        instructions=instructions,
+        instructions=company_info,
         input=question
     )
 
