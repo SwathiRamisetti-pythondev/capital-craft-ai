@@ -1,5 +1,8 @@
 
 import streamlit as st
+import csv
+import os
+from datetime import datetime
 
 
 def show_lead_form():
@@ -31,13 +34,48 @@ def show_lead_form():
         if submitted:
             if not name.strip():
                 st.error("Please enter your full name.")
+
             elif not email.strip():
                 st.error("Please enter your email address.")
+
             elif not phone.strip():
                 st.error("Please enter your phone number.")
+
             else:
+                file_path = "callback_requests.csv"
+                file_exists = (
+                    os.path.exists(file_path)
+                    and os.path.getsize(file_path) > 0
+                )
+
+                with open(
+                    file_path,
+                    "a",
+                    newline="",
+                    encoding="utf-8",
+                ) as file:
+                    writer = csv.writer(file)
+
+                    if not file_exists:
+                        writer.writerow([
+                            "Date and Time",
+                            "Full Name",
+                            "Email Address",
+                            "Phone Number",
+                            "Service",
+                        ])
+
+                    writer.writerow([
+                        datetime.now().strftime(
+                            "%Y-%m-%d %H:%M:%S"
+                        ),
+                        name.strip(),
+                        email.strip(),
+                        phone.strip(),
+                        service,
+                    ])
+
                 st.success(
-                    "Thank you! Your details have been entered. "
-                    "The callback request is not yet saved or sent "
-                    "to the company."
+                    "Thank you! Your callback request "
+                    "has been saved successfully."
                 )
